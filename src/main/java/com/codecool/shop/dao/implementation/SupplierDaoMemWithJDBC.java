@@ -9,7 +9,11 @@ import java.sql.*;
 import java.util.*;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SupplierDaoMemWithJDBC extends JDBCConnection implements SupplierDaoWithJDBC {
+    private static final Logger logger = LoggerFactory.getLogger(SupplierDaoMemWithJDBC.class);
 
     public SupplierDaoMemWithJDBC() throws IOException {
     }
@@ -38,8 +42,10 @@ public class SupplierDaoMemWithJDBC extends JDBCConnection implements SupplierDa
                     }
                 }
                 resultList.add(supp);
+                logger.debug("The following Supplier was added to the returning resultList: {}", supp.getName());
             }
             connection.close();
+            logger.info("database connection closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,6 +66,7 @@ public class SupplierDaoMemWithJDBC extends JDBCConnection implements SupplierDa
                         resultSet.getString("description")
                 );
                 connection.close();
+                logger.info("database connection closed.");
                 return supplier;
             } else {return null;}
 
@@ -74,6 +81,7 @@ public class SupplierDaoMemWithJDBC extends JDBCConnection implements SupplierDa
         String query = "INSERT INTO suppliers (supplierId, name, description)" +
                 "VALUES ('" + supplier.getSupplierId() + "', '" + supplier.getName() + "','" + supplier.getDescription() + "');";
         executeQuery(query);
+        logger.info("The following supplier was added to database: {}", supplier.getName());
     }
 
 }

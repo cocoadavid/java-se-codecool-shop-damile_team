@@ -12,7 +12,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ProductDaoMemWithJDBC extends JDBCConnection implements ProductDaoWithJDBC {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductDaoMemWithJDBC.class);
 
     public ProductDaoMemWithJDBC() throws IOException {
     }
@@ -44,8 +49,10 @@ public class ProductDaoMemWithJDBC extends JDBCConnection implements ProductDaoW
                         supplier
                 );
                 resultList.add(prod);
+                logger.debug("The following product was added to returning resultList: {}", prod.getName());
             }
             connection.close();
+            logger.info("database connection closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,8 +82,10 @@ public class ProductDaoMemWithJDBC extends JDBCConnection implements ProductDaoW
                         supplier
                 );
                 resultList.add(prod);
+                logger.debug("The following product was added to the returning resultList: {}", prod.getName());
             }
             connection.close();
+            logger.info("database connection closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,8 +115,10 @@ public class ProductDaoMemWithJDBC extends JDBCConnection implements ProductDaoW
                         supplier
                 );
                 resultList.add(prod);
+                logger.debug("The following product was added to the returning resultList: {}", prod.getName());
             }
             connection.close();
+            logger.info("database connection closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,6 +134,7 @@ public class ProductDaoMemWithJDBC extends JDBCConnection implements ProductDaoW
                 "', '" + product.getDefaultCurrency() + "', '" + product.getDescription() + "', '" + product.getProductCategory().getProductCategoryId() +
                 "', '" + product.getSupplier().getSupplierId() + "');";
         executeQuery(query);
+        logger.info("The following product was added to database: {}", product.getName());
     }
 
 }

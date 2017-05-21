@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ProductCategoryDaoMemWithJDBC extends JDBCConnection implements ProductCategoryDaoWithJDBC {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductCategoryDaoMemWithJDBC.class);
 
     public ProductCategoryDaoMemWithJDBC() throws IOException {
     }
@@ -36,8 +41,10 @@ public class ProductCategoryDaoMemWithJDBC extends JDBCConnection implements Pro
                     }
                 }
                 resultList.add(prodCat);
+                logger.debug("The following Category was added to the returning resultList: {}", prodCat.getName());
             }
             connection.close();
+            logger.info("database connection closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,6 +67,7 @@ public class ProductCategoryDaoMemWithJDBC extends JDBCConnection implements Pro
                         resultSet.getString("description")
                 );
                 connection.close();
+                logger.info("database connection closed.");
                 return prodCat;
             } else {return null;}
 
@@ -85,6 +93,7 @@ public class ProductCategoryDaoMemWithJDBC extends JDBCConnection implements Pro
                         resultSet.getString("description")
                 );
                 connection.close();
+                logger.info("database connection closed.");
                 return prodCat;
             } else {return null;}
 
@@ -99,6 +108,7 @@ public class ProductCategoryDaoMemWithJDBC extends JDBCConnection implements Pro
         String query = "INSERT INTO productcategories (productCategoryId, name, department, description)" +
                 "VALUES ('" + prodCat.getProductCategoryId() + "', '" + prodCat.getName() + "', '" + prodCat.getDepartment() + "', '" + prodCat.getDescription() + "');";
         executeQuery(query);
+        logger.info("The following category was added to database: {}", prodCat.getName());
     }
 
 }

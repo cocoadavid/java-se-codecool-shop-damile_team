@@ -18,11 +18,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class ProductController {
 
     private static ProductCategory filteredCategory;
     private static Supplier filteredSupplier;
     private static List<Product> filteredProduct;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
 
     public static ModelAndView renderProducts(Request req, Response res) throws IOException {
@@ -49,13 +54,13 @@ public class ProductController {
 
 
         String selectedCategory = req.params(":categoryName");
-        System.out.println(selectedCategory);
 
         for (ProductCategory cat : productCategoryDaoWithJDBC.getAllCategories()) {
             if (selectedCategory.equals(cat.getName())) {
                 filteredCategory = cat;
             }
         }
+        logger.debug("Products filtered by the following category: {}", filteredCategory.getName());
         Map params = new HashMap<>();
         params.put("category", productCategoryDaoWithJDBC.getAllCategories());
         params.put("products", productDaoWithJDBC.getProductBy(filteredCategory));
@@ -77,6 +82,7 @@ public class ProductController {
                 filteredSupplier = sup;
             }
         }
+        logger.debug("Products filtered by the following supplier: {}", filteredSupplier.getName());
         Map params = new HashMap<>();
         params.put("supplier", supplierDaoWithJDBC.getAllSupplier());
         params.put("category", productCategoryDaoWithJDBC.getAllCategories());
